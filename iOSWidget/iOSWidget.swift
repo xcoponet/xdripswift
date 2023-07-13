@@ -53,70 +53,22 @@ func slopeArrow(slopeOrdinal: UInt8) -> String {
     }
 }
 
-struct StyledGauge: View {
-    @State private var current: UInt16
-    @State private var slope: UInt8
-//    @State private var familly: WidgetFamily
-    // Obtain the widget family value
-    let familly: Int16
-
-    init(glu: [Glucose], familly: WidgetFamily)
+func gluColor(glu: UInt16) -> Color
+{
+    if(glu < 55 || glu > 250)
     {
-//        self.familly = familly
-        self.current = glucoseFormatter(glucoses: glu).0
-        self.slope = glucoseFormatter(glucoses: glu).1
-        self.familly = Int16(familly.rawValue)
+        return Color.red
     }
-
-    var body: some View {
-        GeometryReader { geometry in
-            HStack(spacing: 0) { // HStack to center in the widget
-                ZStack {
-                    
-                    Circle()
-                        .stroke(gluColor(glu:current), lineWidth: 2)
-                        .frame(height: min(geometry.size.height-4, 100))
-                        .padding(2) // optional, adds a bit of space between the circle border and the widget's edges
-                    
-                    VStack
-                    {
-                        let arrowTxt = Text(slopeArrow(slopeOrdinal:slope)).foregroundColor(gluColor(glu:current))
-//                        Text("\(current)").foregroundColor(gluColor(glu:current))
-                        let currenTxt = Text("\(current)").foregroundColor(gluColor(glu:current))
-                        if(familly == WidgetFamily.systemMedium.rawValue)
-                        {
-                            arrowTxt.font(.system(size: 50))
-                            currenTxt.font(.largeTitle)
-                        }
-                        else
-                        {
-                            arrowTxt.font(.system(size: 25))
-                            currenTxt.font(.headline)
-                        }
-                    }
-                }
-                .background(Color.clear)
-                .edgesIgnoringSafeArea(.all)
-            }.frame(maxWidth: .infinity, maxHeight: .infinity) // center in the widget
-        }
-    }
-    
-    func gluColor(glu: UInt16) -> Color
+    else if(glu < 70 || glu > 180)
     {
-        if(glu < 55 || glu > 250)
-        {
-            return Color.red
-        }
-        else if(glu < 70 || glu > 180)
-        {
-            return Color.orange
-        }
-        else
-        {
-            return Color.green
-        }
+        return Color.orange
+    }
+    else
+    {
+        return Color.green
     }
 }
+
 
 struct SimpleTimeLineProvider: TimelineProvider {
     
@@ -126,12 +78,12 @@ struct SimpleTimeLineProvider: TimelineProvider {
         // This data will be masked
         return SimpleEntry(date: Date(), providerInfo: "placeholder")
     }
-
+    
     func getSnapshot(in context: Context, completion: @escaping (Entry) -> ()) {
         let entry = SimpleEntry(date: Date(), providerInfo: "snapshot")
         completion(entry)
     }
-
+    
     func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
         let entry = SimpleEntry(date: Date(), providerInfo: "timeline")
         
@@ -158,7 +110,7 @@ struct SimpleTimeLineProvider: TimelineProvider {
         let currentDate = Date()
         
         var entries: [Entry] = []
-
+        
         for minuteOffset in 0..<10 {
             let refreshDate = Calendar.current.date(byAdding: .minute, value: minuteOffset, to: currentDate)!
             let currententry = SimpleEntry(date: refreshDate, providerInfo: "timeline")
@@ -166,7 +118,7 @@ struct SimpleTimeLineProvider: TimelineProvider {
             currententry.glucoseVars = entry.glucoseVars
             entries.append(currententry)
         }
-
+        
         let timeline = Timeline(entries: entries, policy: .atEnd)
         completion(timeline)
     }
@@ -176,7 +128,7 @@ class SimpleEntry: TimelineEntry {
     let date: Date
     var updDate: Date
     let providerInfo: String
-        
+    
     var glucoseVars:[Glucose]
     
     init(date: Date, providerInfo: String)
@@ -192,20 +144,20 @@ class SimpleEntry: TimelineEntry {
 }
 
 struct SimpleWidgetView : View {
-   
+    
     let entry: SimpleEntry
     
     // Obtain the widget family value
     @Environment(\.widgetFamily)
     var family
-
+    
     var body: some View {
         switch family {
         case .accessoryRectangular:
             RectangularWidgetView(entry: entry)
         case .accessoryCircular:
             CircularWidgetView(entry: entry)
-        
+            
         default:
             // UI for Home Screen widget
             HomeScreenMediumWidgetView(entry: entry, type: family)
@@ -216,7 +168,7 @@ struct SimpleWidgetView : View {
 @main
 struct SimpleWidget: Widget {
     let kind: String = "xDripWidget"
-
+    
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: SimpleTimeLineProvider()) { entry in
             SimpleWidgetView(entry: entry)
@@ -241,50 +193,46 @@ struct HomeScreenMediumWidgetView: View {
     let type: WidgetFamily
     
     var body: some View {
-        GeometryReader { geometry in
-            HStack(spacing: 0) {
-                // Your block 1 content goes here.
-                if(entry.glucoseVars.count > 0)
+        VStack {
+            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], alignment: .center, spacing: 10) {
+                let timestamp = entry.glucoseVars[0].timestamp
+                let timeDiff = Calendar.current.dateComponents([.minute], from: timestamp, to: entry.date).minute ?? 0
+                let timeDiffTxt = Text("\(timeDiff) min ago")
+                if(type == .systemMedium)
                 {
-                    VStack {
-                        let timestamp = entry.glucoseVars[0].timestamp
-                        let timeDiff = Calendar.current.dateComponents([.minute], from: timestamp, to: entry.date).minute ?? 0
-                        let timeDiffTxt = Text("\(timeDiff) min ago")
-                        if(type == .systemMedium)
-                        {
-                            timeDiffTxt.font(.body)
-                        }
-                        else
-                        {
-                            timeDiffTxt.font(.footnote)
-                        }
-                    }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .border(Color.black)
-                    
-                    VStack {
-                        StyledGauge(glu: entry.glucoseVars, familly: type)
-                    }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .border(Color.black)
-                    
-                    VStack {
-                        if(entry.glucoseVars.count > 1)
-                        {
-                            let glyDiff: Int16 = Int16(entry.glucoseVars[0].glucose) - Int16(entry.glucoseVars[1].glucose)
-                            let diffStr = (glyDiff > 0 ? "+" : "") + "\(glyDiff) mg/dL"
-                            Text(diffStr)
-                        }
-                    }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .border(Color.black)
+                    timeDiffTxt.font(.system(size: 10)).padding(.top).padding(.leading)
+                }
+                else
+                {
+                    timeDiffTxt.font(.system(size: 10)).padding(.top).padding(.leading)
+                }
+                
+                if(entry.glucoseVars.count > 1)
+                {
+                    let glyDiff: Int16 = Int16(entry.glucoseVars[0].glucose) - Int16(entry.glucoseVars[1].glucose)
+                    let diffStr = (glyDiff > 0 ? "+" : "") + "\(glyDiff)"
+                    Text(diffStr).font(.system(size: 10))
+                        .padding(.trailing)
+                        .padding(.top)
                 }
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color.black) // Optional, to see the block's boundaries
-            .foregroundColor(Color.white)
-
+            Spacer()
+            
+            VStack
+            {
+                let current = glucoseFormatter(glucoses: entry.glucoseVars).0
+                let slope = glucoseFormatter(glucoses: entry.glucoseVars).1
+                
+                Text(slopeArrow(slopeOrdinal:slope)).foregroundColor(gluColor(glu:current)).font(.system(size: 50))
+                HStack{
+                    Text("\(current)").foregroundColor(gluColor(glu:current)).font(.system(size: 40))
+                        .padding(.bottom)
+                    Text("mg/dL").foregroundColor(gluColor(glu:current))
+                }
             }
+            
+            
+        }.background(.black).foregroundColor(.white)
     }
     
     init(entry: SimpleEntry, type: WidgetFamily)
@@ -292,13 +240,6 @@ struct HomeScreenMediumWidgetView: View {
         self.entry = entry
         self.type = type
     }
-    
-    func timeString(date: Date) -> String {
-            let formatter = DateFormatter()
-//            formatter.timeStyle = .medium
-        formatter.dateFormat = "HH:mm:ss"
-            return formatter.string(from: date)
-        }
 }
 
 
@@ -314,10 +255,26 @@ struct RectangularWidgetView: View {
     var body: some View {
         GeometryReader { geometry in
             ZStack {
+                AccessoryWidgetBackground()
                 HStack {
-                    StyledGauge(glu: entry.glucoseVars, familly: .accessoryRectangular)
+                    GeometryReader { geometry in
+                        HStack(spacing: 0) { // HStack to center in the widget
+                            
+                            VStack
+                            {
+                                let current = glucoseFormatter(glucoses: entry.glucoseVars).0
+                                let slope = glucoseFormatter(glucoses: entry.glucoseVars).1
+                                let arrowTxt = Text(slopeArrow(slopeOrdinal:slope)).foregroundColor(gluColor(glu:current))
+                                //                        Text("\(current)").foregroundColor(gluColor(glu:current))
+                                let currenTxt = Text("\(current)").foregroundColor(gluColor(glu:current))
+                                
+                                arrowTxt.font(.system(size: 25))
+                                currenTxt.font(.headline)
+                            }
+                        }.frame(maxWidth: .infinity, maxHeight: .infinity) // center in the widget
+                    }
                     
-
+                    
                     VStack
                     {
                         if(entry.glucoseVars.count > 0)
@@ -335,11 +292,11 @@ struct RectangularWidgetView: View {
                         }
                         else
                         {
-                                // Trade view with the full description on bigger screens.
-                                Text("\(Date(), style: .relative) ago")
-                                    .monospacedDigit().font(.footnote)
+                            // Trade view with the full description on bigger screens.
+                            Text("\(Date(), style: .relative) ago")
+                                .monospacedDigit().font(.footnote)
                         }
-                    }
+                    }.padding(5)
                 }
             }
         }
@@ -360,12 +317,22 @@ struct CircularWidgetView: View {
     
     var body: some View {
         GeometryReader { geometry in
-            ZStack {
-//                AccessoryWidgetBackground()
-                VStack {
-                    StyledGauge(glu: entry.glucoseVars, familly: .accessoryCircular)
+            HStack(spacing: 0) { // HStack to center in the widget
+                
+                VStack
+                {
+                    let current = glucoseFormatter(glucoses: entry.glucoseVars).0
+                    let slope = glucoseFormatter(glucoses: entry.glucoseVars).1
+                    let arrowTxt = Text(slopeArrow(slopeOrdinal:slope)).foregroundColor(gluColor(glu:current))
+                    //                        Text("\(current)").foregroundColor(gluColor(glu:current))
+                    let currenTxt = Text("\(current)").foregroundColor(gluColor(glu:current))
+                    
+                    arrowTxt.font(.system(size: 25))
+                    currenTxt.font(.headline)
                 }
-            }
+                .background(Color.clear)
+                .edgesIgnoringSafeArea(.all)
+            }.frame(maxWidth: .infinity, maxHeight: .infinity) // center in the widget
         }
     }
 }
@@ -378,14 +345,14 @@ struct SimpleWidgetView_Previews: PreviewProvider {
         
         SimpleWidgetView(entry: SimpleEntry(date: Date(), providerInfo: "preview"))
             .previewContext(WidgetPreviewContext(family: .systemMedium))
-
-
+        
+        
         SimpleWidgetView(entry: SimpleEntry(date: Date(), providerInfo: "preview"))
             .previewContext(WidgetPreviewContext(family: .accessoryRectangular))
         
         SimpleWidgetView(entry: SimpleEntry(date: Date(), providerInfo: "preview"))
             .previewContext(WidgetPreviewContext(family: .accessoryCircular))
-
-
+        
+        
     }
 }
