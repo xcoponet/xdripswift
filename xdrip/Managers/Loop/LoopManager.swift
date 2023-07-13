@@ -8,6 +8,7 @@
 
 import Foundation
 import OSLog
+import WidgetKit
 
 public class LoopManager:NSObject {
     
@@ -213,6 +214,7 @@ public class LoopManager:NSObject {
             // initially set timeStampLatestLoopSharedBgReading to timestamp of first reading - may get another value later, in case loopdelay > 0
             // add 5 seconds to last Readings timestamp, because due to the way timestamp for libre readings is calculated, it may happen that the same reading shifts 1 or 2 seconds in next reading cycle
             UserDefaults.standard.timeStampLatestLoopSharedBgReading = lastReadings.first!.timeStamp.addingTimeInterval(5.0)
+            WidgetCenter.shared.reloadAllTimelines()
             
             // in case loopdelay is used, then update UserDefaults.standard.timeStampLatestLoopSharedBgReading with value of timestamp of first element in the dictionary
             if let element = dictionary.first, loopDelay > 0 {
@@ -228,7 +230,6 @@ public class LoopManager:NSObject {
                     }
                     
                 }
-                
             }
             
         } else {
