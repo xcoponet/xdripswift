@@ -10,6 +10,17 @@ import WidgetKit
 import SwiftUI
 
 
+extension View {
+    func widgetBackground(_ color: Color) -> some View {
+        if #available(iOSApplicationExtension 17.0, macOSApplicationExtension 14.0, *) {
+            return  containerBackground(color, for: .widget)
+        } else {
+            return background(color)
+        }
+    }
+}
+
+
 func glucoseFormatter(glucoses: [Glucose]) -> (UInt16, UInt8)
 {
     if(glucoses.count > 0)
@@ -89,9 +100,6 @@ struct SimpleTimeLineProvider: TimelineProvider {
         
         // Perform any setup necessary in order to update the view.
         
-        // If an error is encountered, use NCUpdateResult.Failed
-        // If there's no update required, use NCUpdateResult.NoData
-        // If there's an update, use NCUpdateResult.NewData
         let xDripClient = XDripClient();
         xDripClient.fetchLast(2, callback:  { (error, glucoseArray) in
             
@@ -108,19 +116,29 @@ struct SimpleTimeLineProvider: TimelineProvider {
         })
         
         let currentDate = Date()
+        let lastGlyDate = (entry.glucoseVars.count > 0 ? entry.glucoseVars[0].timestamp : nil)!;
         
-        var entries: [Entry] = []
-        
-        for minuteOffset in 0..<10 {
-            let refreshDate = Calendar.current.date(byAdding: .minute, value: minuteOffset, to: currentDate)!
-            let currententry = SimpleEntry(date: refreshDate, providerInfo: "timeline")
-            currententry.updDate = Calendar.current.date(byAdding: .minute, value: 1, to: refreshDate)!
-            currententry.glucoseVars = entry.glucoseVars
-            entries.append(currententry)
+        if(currentDate > Calendar.current.date(byAdding: .minute, value: 5, to: lastGlyDate)!)
+        {
+            entry.updDate = Calendar.current.date(byAdding: .second, value: 10, to: currentDate)!
+            let timeline = Timeline(entries: [entry], policy: .after(entry.updDate))
+            completion(timeline)
         }
-        
-        let timeline = Timeline(entries: entries, policy: .atEnd)
-        completion(timeline)
+        else
+        {
+            var entries: [Entry] = []
+            
+            for minuteOffset in 0..<5 {
+                let refreshDate = Calendar.current.date(byAdding: .minute, value: minuteOffset, to: currentDate)!
+                let currententry = SimpleEntry(date: refreshDate, providerInfo: "timeline")
+                currententry.updDate = Calendar.current.date(byAdding: .minute, value: 1, to: refreshDate)!
+                currententry.glucoseVars = entry.glucoseVars
+                entries.append(currententry)
+            }
+            
+            let timeline = Timeline(entries: entries, policy: .atEnd)
+            completion(timeline)
+        }
     }
 }
 
@@ -232,7 +250,7 @@ struct HomeScreenMediumWidgetView: View {
             }
             
             
-        }.background(.black).foregroundColor(.white)
+        }.foregroundColor(.white).widgetBackground(.black)
     }
     
     init(entry: SimpleEntry, type: WidgetFamily)
@@ -299,7 +317,7 @@ struct RectangularWidgetView: View {
                     }.padding(5)
                 }
             }
-        }
+        }.widgetBackground(.black)
     }
 }
 
@@ -332,7 +350,8 @@ struct CircularWidgetView: View {
                 }
                 .background(Color.clear)
                 .edgesIgnoringSafeArea(.all)
-            }.frame(maxWidth: .infinity, maxHeight: .infinity) // center in the widget
+            }.frame(maxWidth: .infinity, maxHeight: .infinity)// center in the widget
+                .widgetBackground(.black)
         }
     }
 }
