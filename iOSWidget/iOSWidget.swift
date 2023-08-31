@@ -116,11 +116,16 @@ struct SimpleTimeLineProvider: TimelineProvider {
         })
         
         let currentDate = Date()
-        let lastGlyDate = (entry.glucoseVars.count > 0 ? entry.glucoseVars[0].timestamp : nil)!;
-        
-        if(currentDate > Calendar.current.date(byAdding: .minute, value: 5, to: lastGlyDate)!)
+        let lastGlyDate = (entry.glucoseVars.count > 0 ? entry.glucoseVars[0].timestamp : nil);
+        var refreshDate = lastGlyDate != nil ? lastGlyDate : currentDate;
+        while(refreshDate! < currentDate)
         {
-            entry.updDate = Calendar.current.date(byAdding: .second, value: 10, to: currentDate)!
+            refreshDate = Calendar.current.date(byAdding: .minute, value: 1, to: refreshDate!)
+        }
+        if(lastGlyDate == nil || refreshDate! >= Calendar.current.date(byAdding: .minute, value: 5, to: lastGlyDate!)!)
+        {
+            entry.updDate = Calendar.current.date(byAdding: .second, value: 30, to: currentDate)!
+            NSLog("Timeline will update in 30s \(entry.updDate)")
             let timeline = Timeline(entries: [entry], policy: .after(entry.updDate))
             completion(timeline)
         }
@@ -128,13 +133,24 @@ struct SimpleTimeLineProvider: TimelineProvider {
         {
             var entries: [Entry] = []
             
-            for minuteOffset in 0..<5 {
-                let refreshDate = Calendar.current.date(byAdding: .minute, value: minuteOffset, to: currentDate)!
-                let currententry = SimpleEntry(date: refreshDate, providerInfo: "timeline")
-                currententry.updDate = Calendar.current.date(byAdding: .minute, value: 1, to: refreshDate)!
+            for minuteOffset in 0..<6 {
+                var nextRefreshDate = Calendar.current.date(byAdding: .minute, value: minuteOffset, to: refreshDate!)!
+                if(minuteOffset == 5)
+                {
+                    nextRefreshDate = Calendar.current.date(byAdding: .second, value: -30, to: nextRefreshDate)!
+                }
+                if(nextRefreshDate >= Calendar.current.date(byAdding: .minute, value: 5, to: lastGlyDate!)! )
+                {
+                    break
+                }
+                let currententry = SimpleEntry(date: nextRefreshDate, providerInfo: "timeline")
+                currententry.updDate = Calendar.current.date(byAdding: .minute, value: 1, to: nextRefreshDate)!
+
                 currententry.glucoseVars = entry.glucoseVars
                 entries.append(currententry)
             }
+            
+            NSLog("Timeline will refresh every min and update in 5min \(refreshDate)")
             
             let timeline = Timeline(entries: entries, policy: .atEnd)
             completion(timeline)
@@ -178,7 +194,7 @@ struct SimpleWidgetView : View {
             
         default:
             // UI for Home Screen widget
-            HomeScreenMediumWidgetView(entry: entry, type: family)
+            HomeScreenWidgetView(entry: entry, type: family)
         }
     }
 }
@@ -204,53 +220,78 @@ struct SimpleWidget: Widget {
     }
 }
 
+
 /// Widget view for home screen
-struct HomeScreenMediumWidgetView: View {
+struct HomeScreenWidgetView: View {
     
     let entry: SimpleEntry
     let type: WidgetFamily
     
     var body: some View {
-        VStack {
-            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], alignment: .center, spacing: 10) {
-                let timestamp = entry.glucoseVars[0].timestamp
-                let timeDiff = Calendar.current.dateComponents([.minute], from: timestamp, to: entry.date).minute ?? 0
-                let timeDiffTxt = Text("\(timeDiff) min ago")
-                if(type == .systemMedium)
-                {
-                    timeDiffTxt.font(.system(size: 10)).padding(.top).padding(.leading)
-                }
-                else
-                {
-                    timeDiffTxt.font(.system(size: 10)).padding(.top).padding(.leading)
-                }
-                
-                if(entry.glucoseVars.count > 1)
-                {
-                    let glyDiff: Int16 = Int16(entry.glucoseVars[0].glucose) - Int16(entry.glucoseVars[1].glucose)
-                    let diffStr = (glyDiff > 0 ? "+" : "") + "\(glyDiff)"
-                    Text(diffStr).font(.system(size: 10))
-                        .padding(.trailing)
-                        .padding(.top)
-                }
-            }
-            Spacer()
-            
-            VStack
+        GeometryReader { geometry in
+            HStack
             {
-                let current = glucoseFormatter(glucoses: entry.glucoseVars).0
-                let slope = glucoseFormatter(glucoses: entry.glucoseVars).1
+                VStack {
+                    LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], alignment: .center, spacing: 10) {
+                        let timestamp = entry.glucoseVars[0].timestamp
+//                        let timeDiff = Calendar.current.dateComponents([.minute], from: timestamp, to: entry.date).minute ?? 0
+                        let diff = Float(entry.date.timeIntervalSince1970 - timestamp.timeIntervalSince1970)
+
+                        let minutes = Int(round(diff / 60.0))
+                       
+                        let timeDiffTxt = Text("\(minutes) min ago")
+                        if(type == .systemMedium)
+                        {
+                            timeDiffTxt.font(.system(size: 10)).padding(.top).padding(.leading)
+                        }
+                        else
+                        {
+                            timeDiffTxt.font(.system(size: 10)).padding(.top).padding(.leading)
+                        }
+                        
+                        if(entry.glucoseVars.count > 1)
+                        {
+                            let glyDiff: Int16 = Int16(entry.glucoseVars[0].glucose) - Int16(entry.glucoseVars[1].glucose)
+                            let diffStr = (glyDiff > 0 ? "+" : "") + "\(glyDiff)"
+                            Text(diffStr).font(.system(size: 10))
+                                .padding(.trailing)
+                                .padding(.top)
+                        }
+                    }
+                    Spacer()
+                    
+                    VStack
+                    {
+                        let current = glucoseFormatter(glucoses: entry.glucoseVars).0
+                        let slope = glucoseFormatter(glucoses: entry.glucoseVars).1
+                        
+                        Text(slopeArrow(slopeOrdinal:slope)).foregroundColor(gluColor(glu:current)).font(.system(size: 50))
+                        let timestamp = entry.glucoseVars[0].timestamp
+                        
+                        HStack{
+                            let shouldStrikethrough = Float(entry.date.timeIntervalSince1970 - timestamp.timeIntervalSince1970) / 60 > 10;
+                            Text("\(current)").foregroundColor(gluColor(glu:current)).font(.system(size: 35))
+                                .padding(.bottom)
+                                .modifier(ConditionalStrikethrough(shouldApply: shouldStrikethrough))
+                            Text("mg/dL").foregroundColor(gluColor(glu:current))
+                        }
+                    }
+                    
+                }.foregroundColor(.white).background(.black)
                 
-                Text(slopeArrow(slopeOrdinal:slope)).foregroundColor(gluColor(glu:current)).font(.system(size: 50))
-                HStack{
-                    Text("\(current)").foregroundColor(gluColor(glu:current)).font(.system(size: 40))
-                        .padding(.bottom)
-                    Text("mg/dL").foregroundColor(gluColor(glu:current))
+                
+                if(type != .systemSmall)
+                { Spacer()
+                    VStack
+                    {
+                        Text("gly date: \(entry.glucoseVars.count > 0 ? dateFmt( entry.glucoseVars[0].timestamp) : "-1")").font(.footnote)
+                        Text("nxt update: \(dateFmt(entry.updDate))").font(.footnote)
+                    }
+                    .frame(width: geometry.size.width / 2, height: geometry.size.height)
+                    .background(.white)
                 }
-            }
-            
-            
-        }.foregroundColor(.white).widgetBackground(.black)
+            }.frame(width: geometry.size.width, height: geometry.size.height).widgetBackground(.black) // hstack
+        }
     }
     
     init(entry: SimpleEntry, type: WidgetFamily)
@@ -258,8 +299,28 @@ struct HomeScreenMediumWidgetView: View {
         self.entry = entry
         self.type = type
     }
+    
+    func dateFmt(_ date: Date) -> String
+    {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm:ss"
+        return formatter.string(from: date)
+    }
 }
 
+struct ConditionalStrikethrough: ViewModifier {
+    var shouldApply: Bool
+    
+    func body(content: Content) -> some View {
+        if shouldApply {
+            return content
+                .strikethrough(true)
+        } else {
+            return content
+                .strikethrough(false)
+        }
+    }
+}
 
 /// Widget view for `accessoryRectangular`
 struct RectangularWidgetView: View {
@@ -284,7 +345,10 @@ struct RectangularWidgetView: View {
                                 let slope = glucoseFormatter(glucoses: entry.glucoseVars).1
                                 let arrowTxt = Text(slopeArrow(slopeOrdinal:slope)).foregroundColor(gluColor(glu:current))
                                 //                        Text("\(current)").foregroundColor(gluColor(glu:current))
+                                let timestamp = entry.glucoseVars[0].timestamp
+                                let shouldStrikethrough = Float(entry.date.timeIntervalSince1970 - timestamp.timeIntervalSince1970) / 60 > 10;
                                 let currenTxt = Text("\(current)").foregroundColor(gluColor(glu:current))
+                                    .modifier(ConditionalStrikethrough(shouldApply: shouldStrikethrough))
                                 
                                 arrowTxt.font(.system(size: 25))
                                 currenTxt.font(.headline)
