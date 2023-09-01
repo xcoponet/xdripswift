@@ -1,6 +1,7 @@
 import UIKit
 import CoreData
 import OSLog
+import ConnectIQ
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -21,6 +22,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         trace("in didFinishLaunchingWithOptions", log: log, category: ConstantsLog.categoryAppDelegate, type: .info)
+        
+        ConnectIQ.sharedInstance().initialize(withUrlScheme: ReturnURLScheme, uiOverrideDelegate: nil)
         
         return true
         
@@ -63,6 +66,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         completionHandler(true)
+    }
+    
+    
+    // handle url
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        print("Received URL: \(url)")
+        return DeviceManager.sharedInstance.handleOpenURL(url)
     }
 }
 

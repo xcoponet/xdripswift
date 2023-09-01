@@ -603,5 +603,14 @@ class Texts_SettingsView {
         return NSLocalizedString("settingsviews_housekeeperRetentionPeriodMessage", tableName: filename, bundle: Bundle.main, value: "For how many days should data be stored? (Min 90, Max 365)\n\n(Recommended: 90 days)", comment: "When clicking the retention setting, a pop up asks for how many days should data be stored")
     }()
     
+    
+    // MARK: - Section Garmin
+    static let sectionTitleGarmin: String = {
+        return NSLocalizedString("settingsviews_sectiontitlegarmin", tableName: filename, bundle: Bundle.main, value: "Garmin", comment: "garmin settings, section title")
+    }()
+    
+    static let labelGarminEnabled = {
+        return NSLocalizedString("settingsviews_garminEnabled", tableName: filename, bundle: Bundle.main, value: "Enable Garmin devices?", comment: "garmin settings, where user can enable or disable Garmin")
+    }()
 }
 

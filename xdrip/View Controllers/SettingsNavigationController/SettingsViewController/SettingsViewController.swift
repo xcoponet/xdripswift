@@ -25,6 +25,8 @@ final class SettingsViewController: UIViewController {
     private var viewModels = [SettingsViewModelProtocol]()
     
     private enum Section: Int, CaseIterable, SettingsProtocol {
+        /// garmin
+        case garmin
         
         /// help section - open help and offer translation
         case help
@@ -114,6 +116,8 @@ final class SettingsViewController: UIViewController {
                 return SettingsViewTraceSettingsViewModel()
             case .info:
                 return SettingsViewInfoViewModel()
+            case .garmin:
+                return SettingsViewGarminSettingsViewModel()
                 
             }
         }
@@ -238,6 +242,9 @@ final class SettingsViewController: UIViewController {
             //nothing to configure
             break
 
+        case .settingsToGarminDevices:
+            // nothing to configure
+            break
         }
     }
 
@@ -345,6 +352,9 @@ extension SettingsViewController {
         
         /// to go from general settings to loop delay schedule
         case settingsToLoopDelaySchedule = "settingsToLoopDelaySchedule"
+        
+        /// to go from general settings to garmin device list
+        case settingsToGarminDevices = "settingsToGarminDevices"
         
     }
 }

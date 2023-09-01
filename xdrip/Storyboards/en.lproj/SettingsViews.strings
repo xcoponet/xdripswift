@@ -133,3 +133,6 @@
 "expanatoryTextSelectTime" = "As of what time should the value apply";
 "expanatoryTextSelectValue" = "Delay in minutes, applied to readings shared with Loop";
 "warningLoopDelayAlreadyExists" = "There is already a loopDelay for this time.";
+
+"settingsviews_sectiontitlegarmin" = "Garmin";
+"settingsviews_garminEnabled" = "Enable Garmin?";

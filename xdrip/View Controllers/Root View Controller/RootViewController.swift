@@ -938,6 +938,10 @@ final class RootViewController: UIViewController {
         // setup bgReadingSpeaker
         bgReadingSpeaker = BGReadingSpeaker(sharedSoundPlayer: soundPlayer, coreDataManager: coreDataManager)
         
+        // setup garmin devices manager
+        DeviceManager.sharedInstance.coreDataManager = coreDataManager;
+        DeviceManager.sharedInstance.restoreDevicesFromFileSystem()
+        
         // setup loopManager
         loopManager = LoopManager(coreDataManager: coreDataManager)
         

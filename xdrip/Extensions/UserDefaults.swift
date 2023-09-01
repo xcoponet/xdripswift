@@ -381,6 +381,12 @@ extension UserDefaults {
         /// - stored as data as read from transmitter
         case librePatchInfo = "librePatchInfo"
         
+        
+        // Garmin
+        
+        /// should readings be uploaded to nightscout
+        case garminEnabled = "garminEnabled"
+        
     }
     
     // MARK: - =====  User Configurable Settings ======
@@ -1943,6 +1949,19 @@ extension UserDefaults {
         }
         set {
             set(newValue, forKey: Key.stopActiveSensor.rawValue)
+        }
+    }
+    
+    
+    // MARK: Garmin Settings
+    
+    /// garmin enabled ? 
+    @objc dynamic var garminEnabled: Bool {
+        get {
+            return bool(forKey: Key.garminEnabled.rawValue)
+        }
+        set {
+            set(newValue, forKey: Key.garminEnabled.rawValue)
         }
     }
     

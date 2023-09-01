@@ -216,6 +216,27 @@ public class LoopManager:NSObject {
             UserDefaults.standard.timeStampLatestLoopSharedBgReading = lastReadings.first!.timeStamp.addingTimeInterval(5.0)
             WidgetCenter.shared.reloadAllTimelines()
             
+            
+            //notify garmin apps
+            if(UserDefaults.standard.garminEnabled )
+            {
+                let deviceManager = DeviceManager.sharedInstance
+                
+                for deviceInfo in deviceManager.devices
+                {
+                    if(deviceInfo.status == .connected)
+                    {
+                        for appInfo in deviceInfo.appInfos.values
+                        {
+                            if appInfo.status?.isInstalled ?? false
+                            {                                
+                                deviceInfo.sendGlucose(appInfo.app);
+                            }
+                        }
+                    }
+                }
+            }            
+            
             // in case loopdelay is used, then update UserDefaults.standard.timeStampLatestLoopSharedBgReading with value of timestamp of first element in the dictionary
             if let element = dictionary.first, loopDelay > 0 {
                 

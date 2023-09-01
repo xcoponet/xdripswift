@@ -3,10 +3,18 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2522C3D72AA0D7E800BB934F /* ConnectIQ in Frameworks */ = {isa = PBXBuildFile; productRef = 2522C3D62AA0D7E800BB934F /* ConnectIQ */; };
+		2522C3D92AA0D8C100BB934F /* DeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2522C3D82AA0D8C100BB934F /* DeviceManager.swift */; };
+		2522C3DB2AA0D8E000BB934F /* constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2522C3DA2AA0D8E000BB934F /* constant.swift */; };
+		2522C3DD2AA0D92600BB934F /* DeviceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2522C3DC2AA0D92600BB934F /* DeviceInfo.swift */; };
+		2522C3DF2AA0D95A00BB934F /* AppInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2522C3DE2AA0D95A00BB934F /* AppInfo.swift */; };
+		2522C3E12AA0D9B300BB934F /* utl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2522C3E02AA0D9B300BB934F /* utl.swift */; };
+		2522C3E42AA0E79D00BB934F /* GarminDevicesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2522C3E32AA0E79D00BB934F /* GarminDevicesViewController.swift */; };
+		253E822F2AA0C1F600D6DD05 /* SettingsViewGarmin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253E822E2AA0C1F600D6DD05 /* SettingsViewGarmin.swift */; };
 		259B4D4B2A449462007EC260 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 259B4D4A2A449462007EC260 /* WidgetKit.framework */; };
 		259B4D4D2A449462007EC260 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 259B4D4C2A449462007EC260 /* SwiftUI.framework */; };
 		259B4D5D2A449467007EC260 /* iOSWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 259B4D492A449462007EC260 /* iOSWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -672,6 +680,13 @@
 		198D44D7260A3A3400A2B4A2 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/Snooze.strings; sourceTree = "<group>"; };
 		198D44D8260A3A3400A2B4A2 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/LibreNFC.strings; sourceTree = "<group>"; };
 		198D44E7260A822000A2B4A2 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/Main.strings; sourceTree = "<group>"; };
+		2522C3D82AA0D8C100BB934F /* DeviceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceManager.swift; sourceTree = "<group>"; };
+		2522C3DA2AA0D8E000BB934F /* constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = constant.swift; sourceTree = "<group>"; };
+		2522C3DC2AA0D92600BB934F /* DeviceInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceInfo.swift; sourceTree = "<group>"; };
+		2522C3DE2AA0D95A00BB934F /* AppInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInfo.swift; sourceTree = "<group>"; };
+		2522C3E02AA0D9B300BB934F /* utl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = utl.swift; sourceTree = "<group>"; };
+		2522C3E32AA0E79D00BB934F /* GarminDevicesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GarminDevicesViewController.swift; sourceTree = "<group>"; };
+		253E822E2AA0C1F600D6DD05 /* SettingsViewGarmin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewGarmin.swift; sourceTree = "<group>"; };
 		259B4D492A449462007EC260 /* iOSWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = iOSWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		259B4D4A2A449462007EC260 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		259B4D4C2A449462007EC260 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -1663,6 +1678,7 @@
 				470824D2297484B500C52317 /* SwiftCharts in Frameworks */,
 				4779BCEE2974306300515714 /* ActionClosurable in Frameworks */,
 				F821CF9722AE589E005C1E43 /* HealthKit.framework in Frameworks */,
+				2522C3D72AA0D7E800BB934F /* ConnectIQ in Frameworks */,
 				4779BCF42974308F00515714 /* PieCharts in Frameworks */,
 				4779BCF12974307700515714 /* CryptoSwift in Frameworks */,
 			);
@@ -1671,6 +1687,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2522C3E22AA0E77400BB934F /* GarminDevicesViewController */ = {
+			isa = PBXGroup;
+			children = (
+				2522C3E32AA0E79D00BB934F /* GarminDevicesViewController.swift */,
+			);
+			path = GarminDevicesViewController;
+			sourceTree = "<group>";
+		};
+		253E822D2AA0C04000D6DD05 /* Garmin */ = {
+			isa = PBXGroup;
+			children = (
+				2522C3D82AA0D8C100BB934F /* DeviceManager.swift */,
+				2522C3DA2AA0D8E000BB934F /* constant.swift */,
+				2522C3DC2AA0D92600BB934F /* DeviceInfo.swift */,
+				2522C3DE2AA0D95A00BB934F /* AppInfo.swift */,
+				2522C3E02AA0D9B300BB934F /* utl.swift */,
+			);
+			path = Garmin;
+			sourceTree = "<group>";
+		};
 		259B4D822A449929007EC260 /* iOSWidget */ = {
 			isa = PBXGroup;
 			children = (
@@ -2365,6 +2401,7 @@
 		F8AC425C21ADEBD60078C348 /* xdrip */ = {
 			isa = PBXGroup;
 			children = (
+				253E822D2AA0C04000D6DD05 /* Garmin */,
 				F821CF9822AE589E005C1E43 /* xdrip.entitlements */,
 				F8A5EEC5257EDC910085E660 /* xdripDebug.entitlements */,
 				F8A54B0A22D9215500934E7A /* xdrip-Bridging-Header.h */,
@@ -2578,6 +2615,7 @@
 		F8B3A823227E4B7D004BA588 /* SettingsNavigationController */ = {
 			isa = PBXGroup;
 			children = (
+				2522C3E22AA0E77400BB934F /* GarminDevicesViewController */,
 				F8B3A82C227F07D6004BA588 /* SettingsNavigationController.swift */,
 				F8B3A836227F090D004BA588 /* SettingsViewController */,
 			);
@@ -2636,6 +2674,7 @@
 				4752B4052635878E0081D551 /* SettingsViewStatisticsSettingsViewModel.swift */,
 				F8E51D6824549E2C001C9E5A /* SettingsViewTraceSettingsViewModel.swift */,
 				47150A3F27F6211C00DB2994 /* SettingsViewTreatmentsSettingsViewModel.swift */,
+				253E822E2AA0C1F600D6DD05 /* SettingsViewGarmin.swift */,
 			);
 			path = SettingsViewModels;
 			sourceTree = "<group>";
@@ -3353,6 +3392,7 @@
 				4779BCF02974307700515714 /* CryptoSwift */,
 				4779BCF32974308F00515714 /* PieCharts */,
 				470824D1297484B500C52317 /* SwiftCharts */,
+				2522C3D62AA0D7E800BB934F /* ConnectIQ */,
 			);
 			productName = xdrip;
 			productReference = F8AC425A21ADEBD60078C348 /* xdrip.app */;
@@ -3426,6 +3466,7 @@
 				4779BCEC2974306300515714 /* XCRemoteSwiftPackageReference "ActionClosurable" */,
 				4779BCEF2974307700515714 /* XCRemoteSwiftPackageReference "CryptoSwift" */,
 				4779BCF22974308F00515714 /* XCRemoteSwiftPackageReference "PieCharts" */,
+				2522C3D52AA0D7E800BB934F /* XCRemoteSwiftPackageReference "connectiq-companion-app-sdk-ios" */,
 			);
 			productRefGroup = F8AC425B21ADEBD60078C348 /* Products */;
 			projectDirPath = "";
@@ -3728,6 +3769,7 @@
 				F8797CEA255B43960033956B /* GlucoseData+Smoothable.swift in Sources */,
 				F821CF9022AB1068005C1E43 /* DatePickerViewData.swift in Sources */,
 				F8F9722623A5915900C3F17D /* BluconTransmitterOpCode.swift in Sources */,
+				2522C3DF2AA0D95A00BB934F /* AppInfo.swift in Sources */,
 				F8025E4E21ED450300ECF0C0 /* Double.swift in Sources */,
 				F8F9723423A5915900C3F17D /* BluetoothTransmitterDelegate.swift in Sources */,
 				F8F9724923A69DAE00C3F17D /* M5StickC.swift in Sources */,
@@ -3776,6 +3818,7 @@
 				F80859292364D61B00F3829D /* UserDefaults+charts.swift in Sources */,
 				F8B955B7258D5E2000C06016 /* ConstantsHealthKit.swift in Sources */,
 				F8B3A7B2226A0878004BA588 /* TextsAlerts.swift in Sources */,
+				253E822F2AA0C1F600D6DD05 /* SettingsViewGarmin.swift in Sources */,
 				D4BAF37627769B38009D3465 /* TreatmentTableViewCell.swift in Sources */,
 				D40C3DA62775438F00111B73 /* TreatmentEntry+CoreDataProperties.swift in Sources */,
 				F80D917024F85C7A006840B5 /* Libre2+BluetoothPeripheral.swift in Sources */,
@@ -3796,6 +3839,7 @@
 				4752B4062635878E0081D551 /* SettingsViewStatisticsSettingsViewModel.swift in Sources */,
 				F897AAF92200F2D200CDDD10 /* CBPeripheralState.swift in Sources */,
 				F858CCED25AE4CD100786B91 /* LibreOOPWebError.swift in Sources */,
+				2522C3DD2AA0D92600BB934F /* DeviceInfo.swift in Sources */,
 				D4FD899727772F9100689788 /* TreatmentEntryAccessor.swift in Sources */,
 				F8F971B623A5914D00C3F17D /* M5Stack+BluetoothPeripheral.swift in Sources */,
 				F830992323C291EE005741DF /* Watlaa+BluetoothPeripheral.swift in Sources */,
@@ -3879,6 +3923,7 @@
 				F80ED2EE236F68F90005C035 /* SettingsViewM5StackWiFiSettingsViewModel.swift in Sources */,
 				F8FDD6CB2553385000625B49 /* Array.swift in Sources */,
 				F8A389C823203E3E0010F405 /* ConstantsM5Stack.swift in Sources */,
+				2522C3DB2AA0D8E000BB934F /* constant.swift in Sources */,
 				F898EDEA233F53BF00BFB79B /* UIButton.swift in Sources */,
 				F81F9FF822861E6D0028C70F /* KeyValueObserverTimeKeeper.swift in Sources */,
 				F8B3A858227F6971004BA588 /* UISwitch.swift in Sources */,
@@ -3914,6 +3959,7 @@
 				F8A2BC3925DB0D6D001D1E78 /* BluetoothPeripheralManager+CGMLibre2TransmitterDelegate.swift in Sources */,
 				F8A5EEAE25791F370085E660 /* Libre2BLEUtilities.swift in Sources */,
 				F86697502867AA4A00025441 /* LoopDelayScheduleView.swift in Sources */,
+				2522C3E12AA0D9B300BB934F /* utl.swift in Sources */,
 				F8E3C3AB21FE17B700907A04 /* StringProtocol.swift in Sources */,
 				F8F9720723A5915900C3F17D /* AuthChallengeTxMessage.swift in Sources */,
 				F8B3A78E22622954004BA588 /* AlertType+CoreDataClass.swift in Sources */,
@@ -3925,6 +3971,7 @@
 				F821CF7B22A1D359005C1E43 /* NightScoutFollowerDelegate.swift in Sources */,
 				F8F9721523A5915900C3F17D /* PairRequestTxMessage.swift in Sources */,
 				F8BECB12235CEA9B0060DAE1 /* TimeInterval.swift in Sources */,
+				2522C3D92AA0D8C100BB934F /* DeviceManager.swift in Sources */,
 				F8F1670C27273774001AA3D8 /* GlucoseBackfillRxMessage.swift in Sources */,
 				F8F9720823A5915900C3F17D /* BatteryStatusTxMessage.swift in Sources */,
 				F8CB59C6273ECFE500BA199E /* DexcomG6GlucoseDataRxMessage.swift in Sources */,
@@ -3943,6 +3990,7 @@
 				F856CE5B22EDC8E50083E436 /* ConstantsBluetoothPairing.swift in Sources */,
 				F8F971B823A5914D00C3F17D /* BluetoothPeripheral.swift in Sources */,
 				F8F9721723A5915900C3F17D /* CGMDroplet1Transmitter.swift in Sources */,
+				2522C3E42AA0E79D00BB934F /* GarminDevicesViewController.swift in Sources */,
 				F8A2BC2E25DB0D6D001D1E78 /* BluetoothPeripheralManager+CGMDropletTransmitterDelegate.swift in Sources */,
 				F8C5EBE722F38F0E00563B5F /* Trace.swift in Sources */,
 				F8B48A9422B2A705009BCC01 /* TextsSpeakReading.swift in Sources */,
@@ -5170,6 +5218,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		2522C3D52AA0D7E800BB934F /* XCRemoteSwiftPackageReference "connectiq-companion-app-sdk-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/garmin/connectiq-companion-app-sdk-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.5.0;
+			};
+		};
 		4779BCE92974303400515714 /* XCRemoteSwiftPackageReference "SwiftCharts" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ivanschuetz/SwiftCharts";
@@ -5205,6 +5261,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		2522C3D62AA0D7E800BB934F /* ConnectIQ */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2522C3D52AA0D7E800BB934F /* XCRemoteSwiftPackageReference "connectiq-companion-app-sdk-ios" */;
+			productName = ConnectIQ;
+		};
 		470824D1297484B500C52317 /* SwiftCharts */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4779BCE92974303400515714 /* XCRemoteSwiftPackageReference "SwiftCharts" */;
