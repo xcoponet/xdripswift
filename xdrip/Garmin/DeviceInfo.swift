@@ -51,17 +51,17 @@ class DeviceInfo: NSObject , IQAppMessageDelegate
         self.device = device
         self.updateStatus()
         
-        let xDripWidget = IQApp(uuid: UUID(uuidString: "3cb003ff-cc4b-439a-8129-eec629b18d28"), store: UUID(), device: self.device)
+        // let xDripWidget = IQApp(uuid: UUID(uuidString: "3cb003ff-cc4b-439a-8129-eec629b18d28"), store: UUID(), device: self.device)
         let xDripWatchFace = IQApp(uuid: UUID(uuidString: "072d1d77-05ce-43b6-b889-c32169598401"), store: UUID(), device: self.device)
         let xDripDataField = IQApp(uuid: UUID(uuidString: "14cbe159-40d2-413c-8374-87a9dbc9739a"), store: UUID(), device: self.device)
 
-        self.appInfos[xDripWidget!.uuid] = AppInfo(name: "xDrip Widget", iqApp: xDripWidget!)
+        // self.appInfos[xDripWidget!.uuid] = AppInfo(name: "xDrip Widget", iqApp: xDripWidget!)
         self.appInfos[xDripWatchFace!.uuid] = AppInfo(name: "xDrip Watchface", iqApp: xDripWatchFace!)
         self.appInfos[xDripDataField!.uuid] = AppInfo(name: "xDrip Data Field", iqApp: xDripDataField!)
         
         // for test
-        let stringApp = IQApp(uuid: UUID(uuidString: "a3421fee-d289-106a-538c-b9547ab12095"), store: UUID(), device: device)
-        self.appInfos[stringApp!.uuid] = AppInfo(name: "String App", iqApp: stringApp!)
+        // let stringApp = IQApp(uuid: UUID(uuidString: "a3421fee-d289-106a-538c-b9547ab12095"), store: UUID(), device: device)
+        // self.appInfos[stringApp!.uuid] = AppInfo(name: "String App", iqApp: stringApp!)
         
         self.updateAppInfos()
     }

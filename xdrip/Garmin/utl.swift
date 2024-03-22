@@ -27,6 +27,9 @@ func customLog(_ message: String, file: String = #file, function: String = #func
         _ = data.withUnsafeBytes { outputStream.write($0.bindMemory(to: UInt8.self).baseAddress!, maxLength: data.count) }
         outputStream.close()
     }
+
+    // Write to log view
+    globalLogs += logMessage + "\n"
 }
 
 

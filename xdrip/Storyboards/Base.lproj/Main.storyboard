@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22138.1" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="49e-Tb-3d3">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="49e-Tb-3d3">
     <device id="retina6_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22113"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -1221,6 +1221,7 @@
                         <segue destination="Yrn-pr-SQ1" kind="show" identifier="settingsToSchedule" id="GkN-Bx-7f5"/>
                         <segue destination="bzY-sy-ivl" kind="show" identifier="settingsToLoopDelaySchedule" id="Yl3-hC-05i"/>
                         <segue destination="FfJ-qO-l5k" kind="show" identifier="settingsToGarminDevices" id="S2L-Ow-nvw"/>
+                        <segue destination="AwA-4r-etZ" kind="show" identifier="settingsToGarminLogs" id="20Z-UG-nIj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Nw-L8-lE0" sceneMemberID="firstResponder"/>
@@ -2228,6 +2229,16 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qHB-A5-tm7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="474" y="1919"/>
+        </scene>
+        <!--Garmin Logs View Controller-->
+        <scene sceneID="ChE-1e-1nL">
+            <objects>
+                <viewController title="Garmin Logs View Controller" automaticallyAdjustsScrollViewInsets="NO" id="AwA-4r-etZ" customClass="GarminLogsViewController" customModule="xdrip" customModuleProvider="target" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="qgQ-P7-amD"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="IQA-2b-ZqD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-257" y="1919"/>
         </scene>
     </scenes>
     <resources>

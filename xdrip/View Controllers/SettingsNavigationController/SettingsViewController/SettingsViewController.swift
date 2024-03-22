@@ -245,6 +245,8 @@ final class SettingsViewController: UIViewController {
         case .settingsToGarminDevices:
             // nothing to configure
             break
+        case .settingsToGarminLogs:
+            break
         }
     }
 
@@ -355,6 +357,9 @@ extension SettingsViewController {
         
         /// to go from general settings to garmin device list
         case settingsToGarminDevices = "settingsToGarminDevices"
+        
+        /// to go general settings to garmin logs screen
+        case settingsToGarminLogs = "settingsToGarminLogs"
         
     }
 }

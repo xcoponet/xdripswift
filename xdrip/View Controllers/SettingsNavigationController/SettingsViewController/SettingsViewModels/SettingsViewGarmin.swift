@@ -22,6 +22,9 @@ fileprivate enum Setting:Int, CaseIterable {
     /// button to force send a glucose value now
     case forceSendGlucose = 2;
     
+    /// button to see logs
+    case logs = 3;
+    
 }
 
 class SettingsViewGarminSettingsViewModel {
@@ -106,6 +109,9 @@ extension SettingsViewGarminSettingsViewModel: SettingsViewModelProtocol {
                 }
             })
             
+        case .logs:
+            return .performSegue(withIdentifier: SettingsViewController.SegueIdentifiers.settingsToGarminLogs.rawValue, sender: nil);
+            
         }
     }
     
@@ -137,6 +143,8 @@ extension SettingsViewGarminSettingsViewModel: SettingsViewModelProtocol {
             return "Devices"// todo settings
         case .forceSendGlucose:
             return "Force Send Glycemia"
+        case .logs:
+            return "Logs"
         }
     }
     
@@ -150,7 +158,8 @@ extension SettingsViewGarminSettingsViewModel: SettingsViewModelProtocol {
             return UITableViewCell.AccessoryType.disclosureIndicator
         case .forceSendGlucose:
             return UITableViewCell.AccessoryType.disclosureIndicator
-            
+        case .logs:
+            return UITableViewCell.AccessoryType.disclosureIndicator
         }
     }
     
@@ -164,7 +173,8 @@ extension SettingsViewGarminSettingsViewModel: SettingsViewModelProtocol {
             return nil;
         case .forceSendGlucose:
             return nil;
-            
+        case .logs:
+            return nil;
         }
     }
     
@@ -179,6 +189,8 @@ extension SettingsViewGarminSettingsViewModel: SettingsViewModelProtocol {
         case .devices:
             return nil
         case .forceSendGlucose:
+            return nil
+        case .logs:
             return nil
             
             

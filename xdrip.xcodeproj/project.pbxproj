@@ -19,6 +19,7 @@
 		259B4D4D2A449462007EC260 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 259B4D4C2A449462007EC260 /* SwiftUI.framework */; };
 		259B4D5D2A449467007EC260 /* iOSWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 259B4D492A449462007EC260 /* iOSWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		259B4D902A449CAD007EC260 /* iOSWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 259B4D852A449929007EC260 /* iOSWidget.swift */; };
+		259C74592BA4B9620031689A /* GarminLogsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 259C74582BA4B9620031689A /* GarminLogsViewController.swift */; };
 		25F6FEAA2A45EFC6005D5C49 /* ConstantsBloodGlucose.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F6FEA62A45EFA2005D5C49 /* ConstantsBloodGlucose.swift */; };
 		25F6FEAB2A45EFC6005D5C49 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F6FEA32A45EFA1005D5C49 /* Date.swift */; };
 		25F6FEAC2A45EFC6005D5C49 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F6FEA82A45EFA2005D5C49 /* Double.swift */; };
@@ -693,6 +694,7 @@
 		259B4D852A449929007EC260 /* iOSWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSWidget.swift; sourceTree = "<group>"; };
 		259B4D872A44992A007EC260 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		259B4D892A44992A007EC260 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		259C74582BA4B9620031689A /* GarminLogsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GarminLogsViewController.swift; sourceTree = "<group>"; };
 		25F6FE9E2A45ED25005D5C49 /* iOSWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iOSWidgetExtension.entitlements; sourceTree = "<group>"; };
 		25F6FEA22A45EFA1005D5C49 /* XDripClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XDripClient.swift; sourceTree = "<group>"; };
 		25F6FEA32A45EFA1005D5C49 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
@@ -1691,6 +1693,7 @@
 			isa = PBXGroup;
 			children = (
 				2522C3E32AA0E79D00BB934F /* GarminDevicesViewController.swift */,
+				259C74582BA4B9620031689A /* GarminLogsViewController.swift */,
 			);
 			path = GarminDevicesViewController;
 			sourceTree = "<group>";
@@ -3726,6 +3729,7 @@
 				F81D6D4E22BFC762005EFAE2 /* TextsDexcomShareTestResult.swift in Sources */,
 				F8A5EEC2257D18DC0085E660 /* LibreNFCDelegate.swift in Sources */,
 				F8F9720523A5915900C3F17D /* TransmitterMessage.swift in Sources */,
+				259C74592BA4B9620031689A /* GarminLogsViewController.swift in Sources */,
 				F816E1282439DE55009EE65B /* CGMDexomG4TransmitterDelegate.swift in Sources */,
 				F8F1670A2727317D001AA3D8 /* DexcomTransmitterTimeRxMessage.swift in Sources */,
 				F8EA6C8221B723BC0082976B /* Date.swift in Sources */,
